@@ -13,13 +13,14 @@ public class clock {
     private String name;
     private int format;
     
-    private int hours, minutes;
+    private int hours, minutes, seconds;
     
-    private int alarmHours, alarmMinutes;
+    private int alarmHours, alarmMinutes, alarmSeconds;
     
-    public clock(int hours, int minutes, String name) {
+    public clock(int hours, int minutes, int seconds, String name) {
         this.hours = hours;
         this.minutes = minutes;
+        this.seconds = seconds;
         this.name = name;
     }
     
@@ -30,6 +31,22 @@ public class clock {
     }
 
     // Setters and getters for the class's attributes
+
+    public int getSeconds() {
+        return seconds;
+    }
+
+    public void setSeconds(int seconds) {
+        this.seconds = seconds;
+    }
+
+    public int getAlarmtSeconds() {
+        return alarmSeconds;
+    }
+
+    public void setAlarmSeconds(int alertSeconds) {
+        this.alarmSeconds = alertSeconds;
+    }
     
     public String getName() {
         return name;
@@ -80,7 +97,7 @@ public class clock {
     }
  
     
-    public void advanceTime(int newHours, int newMinutes) {
+    public void advanceTime(int duration) {
         /* 
          * I convert the newMinutes to extraHours, for example:
          * If newMinutes is 120 -> extraHours = 2, so I just
@@ -88,36 +105,59 @@ public class clock {
          * Obviously, if there are no extra hours, it will
          * just add 0, which will do no harm.
          *
+         * This does not apply anymore, as - for some reason - the correct
+         * way to make this programm is to advance with seconds, not 
+         * minutes.. This makes my original code "wrong". It still
+         * works correctly though. I'm going to comment it out.
          */
-        int extraHours = 0;
         
-        if (newMinutes >= 60) {
-            extraHours = (minutes+newMinutes)/60;
-            if (newHours != 0) {
-                newHours += extraHours;
-            } 
-            else {
-                newHours = extraHours;
-            }
-            newMinutes -= 60*extraHours;
-        }
-        
-        if (minutes+newMinutes >= 60) {
-            extraHours++;
-            minutes = (minutes+newMinutes) - 60;
-        } 
-        else {
-            minutes += newMinutes;
-        }
-        
-        hours += newHours;
-        if (hours >= format) {
-            hours -= format;
-        }
+//     My implementation of the program, now archived
+//        int extraHours = 0;
+//        
+//        if (newMinutes >= 60) {
+//            extraHours = (minutes+newMinutes)/60;
+//            if (newHours != 0) {
+//                newHours += extraHours;
+//            } 
+//            else {
+//                newHours = extraHours;
+//            }
+//            newMinutes -= 60*extraHours;
+//        }
+//        
+//        if (minutes+newMinutes >= 60) {
+//            extraHours++;
+//            minutes = (minutes+newMinutes) - 60;
+//        } 
+//        else {
+//            minutes += newMinutes;
+//        }
+//        
+//        hours += newHours;
+//        if (hours >= format) {
+//            hours -= format;
+//        }
+
+          hours += duration/3600;
+          minutes += (duration%3600)/60;
+          seconds += (duration%3600)%60;
+          
+          if (seconds >= 60) {
+              minutes++;
+              seconds -= 60;
+          }
+          
+          if (minutes >= 60) {
+              hours++;
+              minutes -= 60;
+          }
+          
+          hours %= format;
+           
     }
     
     public void tellTime() {
-        System.out.println("The time now is: " + hours + ":" + minutes + " and the alarm is set for " + alarmHours + ":" + alarmMinutes);
+        System.out.printf("The time now is %02d:%02d:%02d and the alarm is set for %02d:%02d:%02d\n", hours, minutes, seconds, alarmHours, alarmMinutes, alarmSeconds);
     }
     
     
