@@ -5,6 +5,9 @@
  */
 package tictoc;
 
+import java.time.LocalDateTime;
+import java.util.Scanner;
+
 /**
  *
  * @author jwin
@@ -15,25 +18,33 @@ public class Tictoc {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        clock clk1 = new clock(19, 45, 52, "Morning");
+        Scanner input = new Scanner(System.in);
         
-        clk1.tellTime();
+        int hrs = LocalDateTime.now().getHour();
+        int mins = LocalDateTime.now().getMinute();
+        int sec = LocalDateTime.now().getSecond();
         
-        clk1.setAlarmHours(8);
-        clk1.setAlarmMinutes(20);
-        clk1.setAlarmSeconds(30);
-        clk1.setFormat(24);
+         clock clk1 = new clock(hrs, mins, sec, "ALARM");
         
-        clk1.tellTime();
-        clk1.advanceTime(200);
-        clk1.tellTime();
+        // Entering alarm hour, minutes and seconds
+        System.out.printf("Enter alarm hour: ");
+        clk1.setAlarmHours(input.nextInt());
         
+        System.out.printf("Enter alarm minutes: ");
+        clk1.setAlarmMinutes(input.nextInt());
+        
+        System.out.printf("Enter alarm seconds: ");
+        clk1.setAlarmSeconds(input.nextInt());
+        
+        // Checking if name contains the character a 
         if (clk1.getName().contains("a")) {
             System.out.println("Yes");
         }
         else {
             System.out.println("No");
         }
+        
+        clk1.tellTime();
+        System.out.println(clk1.getTime());    
     }
-    
 }

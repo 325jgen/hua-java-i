@@ -12,22 +12,43 @@ package tictoc;
 public class clock {
     private String name;
     private int format;
+    static int clocks;
     
     private int hours, minutes, seconds;
     
     private int alarmHours, alarmMinutes, alarmSeconds;
     
+    public clock() {
+        hours = 0;
+        minutes = 0;
+        seconds = 0;
+        
+        name = "";
+        format = 0;
+        
+        clocks++;
+    }
+    
     public clock(int hours, int minutes, int seconds, String name) {
         this.hours = hours;
         this.minutes = minutes;
         this.seconds = seconds;
-        this.name = name;
+        
+        this.name = "";
+        
+        clocks++;
     }
     
-    public clock(int hours, String name, int minutes) {
+    public clock(int hours, int minutes, int seconds, int alarmHours, int alarmMinutes, int alarmSeconds, String name) {
         this.hours = hours;
         this.minutes = minutes;
-        this.name = name;
+        this.seconds = seconds;
+        
+        this.alarmHours = alarmHours;
+        this.alarmMinutes = alarmMinutes;
+        this.alarmSeconds = alarmSeconds;
+        
+        clocks++;
     }
 
     // Setters and getters for the class's attributes
@@ -160,5 +181,12 @@ public class clock {
         System.out.printf("The time now is %02d:%02d:%02d and the alarm is set for %02d:%02d:%02d\n", hours, minutes, seconds, alarmHours, alarmMinutes, alarmSeconds);
     }
     
+    public String getTime() {
+        return "The time is " + getHours() + ":" + getMinutes() + ":" + getSeconds();
+    }
+    
+    public static void howManyClocks() {
+        System.out.println("There are " + clocks + " clocks");
+    }
     
 }
