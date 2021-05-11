@@ -5,86 +5,79 @@
  */
 package tictoc;
 
+import java.util.ArrayList;
+
 /**
  *
- * @author jwin
+ * @author nsgou
  */
-public class clock {
-    private String name;
+public class Clock {
+    // create a number of variables. 
+    private int hours;
+    private int minutes;
+    private int seconds;
+    
+    private int alarmHours;
+    private int alarmMinutes;
+    private int alarmSeconds; 
+    
     private int format;
-    static int clocks;
+    private String name;
+    static int clocks=0;
     
-    private int hours, minutes, seconds;
+    private ArrayList<StopWatch> stopWatchList=new ArrayList<>();
     
-    private int alarmHours, alarmMinutes, alarmSeconds;
-    
-    public clock() {
-        hours = 0;
-        minutes = 0;
-        seconds = 0;
-        
-        name = "";
-        format = 0;
-        
-        clocks++;
+/* Create two constructors that can be used for initializing objects of class clock
+   Note that as the type of parameters change in sequence the two constructors 
+   are different. In order to introduce a constructor in an automated way in
+   Netbeans we utilize the keyboard combination Alt+Ins 
+*/
+    public Clock(int hours, int minutes, int seconds, String name) {
+        this.hours = hours;
+        this.minutes = minutes;
+        this.seconds=seconds;
+        this.name = name;
+        clocks++;   
     }
+    public Clock(int hours, String name, int minutes) {
+        this.hours = hours;
+        this.minutes = minutes;
+        this.name = name;
+        clocks++;
+        
+    }
+    public Clock(){
+    hours=0;
+    minutes=0;
+    seconds=0;
     
-    public clock(int hours, int minutes, int seconds, String name) {
+    alarmHours=0;
+    alarmMinutes=0;
+    alarmSeconds=0; 
+    
+    format=0;
+    name="";
+    clocks++;
+    }
+
+    public Clock(int hours, int minutes, int seconds, int alarmHours, int alarmMinutes, int alarmSeconds, int format, String name) {
         this.hours = hours;
         this.minutes = minutes;
         this.seconds = seconds;
-        
-        this.name = "";
-        
-        clocks++;
-    }
-    
-    public clock(int hours, int minutes, int seconds, int alarmHours, int alarmMinutes, int alarmSeconds, String name) {
-        this.hours = hours;
-        this.minutes = minutes;
-        this.seconds = seconds;
-        
         this.alarmHours = alarmHours;
         this.alarmMinutes = alarmMinutes;
         this.alarmSeconds = alarmSeconds;
-        
+        this.format = format;
+        this.name = name;
         clocks++;
     }
-
-    // Setters and getters for the class's attributes
-
-    public int getSeconds() {
-        return seconds;
-    }
-
-    public void setSeconds(int seconds) {
-        this.seconds = seconds;
-    }
-
-    public int getAlarmtSeconds() {
-        return alarmSeconds;
-    }
-
-    public void setAlarmSeconds(int alertSeconds) {
-        this.alarmSeconds = alertSeconds;
-    }
     
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getFormat() {
-        return format;
-    }
-
-    public void setFormat(int format) {
-        this.format = format;
-    }
-
+      
+       
+/* Automated creation of setters and getters is performed using the Alt+Ins
+keyboard combination (multiple standard setters and getters can be created
+at once
+*/
     public int getHours() {
         return hours;
     }
@@ -99,6 +92,14 @@ public class clock {
 
     public void setMinutes(int minutes) {
         this.minutes = minutes;
+    }
+
+    public int getSeconds() {
+        return seconds;
+    }
+
+    public void setSeconds(int seconds) {
+        this.seconds = seconds;
     }
 
     public int getAlarmHours() {
@@ -116,77 +117,58 @@ public class clock {
     public void setAlarmMinutes(int alarmMinutes) {
         this.alarmMinutes = alarmMinutes;
     }
- 
-    
-    public void advanceTime(int duration) {
-        /* 
-         * I convert the newMinutes to extraHours, for example:
-         * If newMinutes is 120 -> extraHours = 2, so I just
-         * add the extraHours to the hours.
-         * Obviously, if there are no extra hours, it will
-         * just add 0, which will do no harm.
-         *
-         * This does not apply anymore, as - for some reason - the correct
-         * way to make this programm is to advance with seconds, not 
-         * minutes.. This makes my original code "wrong". It still
-         * works correctly though. I'm going to comment it out.
-         */
-        
-//     My implementation of the program, now archived
-//        int extraHours = 0;
-//        
-//        if (newMinutes >= 60) {
-//            extraHours = (minutes+newMinutes)/60;
-//            if (newHours != 0) {
-//                newHours += extraHours;
-//            } 
-//            else {
-//                newHours = extraHours;
-//            }
-//            newMinutes -= 60*extraHours;
-//        }
-//        
-//        if (minutes+newMinutes >= 60) {
-//            extraHours++;
-//            minutes = (minutes+newMinutes) - 60;
-//        } 
-//        else {
-//            minutes += newMinutes;
-//        }
-//        
-//        hours += newHours;
-//        if (hours >= format) {
-//            hours -= format;
-//        }
 
-          hours += duration/3600;
-          minutes += (duration%3600)/60;
-          seconds += (duration%3600)%60;
-          
-          if (seconds >= 60) {
-              minutes++;
-              seconds -= 60;
-          }
-          
-          if (minutes >= 60) {
-              hours++;
-              minutes -= 60;
-          }
-          
-          hours %= format;
-           
+    public int getAlarmSeconds() {
+        return alarmSeconds;
     }
-    
-    public void tellTime() {
-        System.out.printf("The time now is %02d:%02d:%02d and the alarm is set for %02d:%02d:%02d\n", hours, minutes, seconds, alarmHours, alarmMinutes, alarmSeconds);
+
+    public void setAlarmSeconds(int alarmSeconds) {
+        this.alarmSeconds = alarmSeconds;
     }
-    
-    public String getTime() {
-        return "The time is " + getHours() + ":" + getMinutes() + ":" + getSeconds();
+
+    public int getFormat() {
+        return format;
     }
-    
-    public static void howManyClocks() {
-        System.out.println("There are " + clocks + " clocks");
+
+    public void setFormat(int format) {
+        this.format = format;
     }
-    
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+   public void advanceTime(int duration){
+       hours+=duration/3600;
+       minutes+=(duration%3600)/60;
+       seconds+=(duration%3600)%60;
+       if(seconds>=60){
+           minutes++;
+           seconds-=60;
+       }
+       if(minutes>=60){
+           hours++;
+           minutes-=60;
+       }
+       hours%=format;
+   }
+   public void tellTime(){
+       System.out.printf("The time is %02d:%02d:%02d and the alarm is set for %02d:%02d:%02d \n", hours,minutes,seconds,alarmHours,alarmMinutes,alarmSeconds);
+   }public String getTime(){
+      return "The time is "+getHours()+":"+getMinutes()+":"+getSeconds();
+   }
+   
+   public static void howManyClocks(){
+       System.out.println("Number of Clocks is "+clocks+" clocks");
+   }
+   
+   public void appendStopWatchList(StopWatch countdown){
+       stopWatchList.add(countdown);
+   }
+   public ArrayList<StopWatch> getStopWatchList(){
+       return stopWatchList;
+   }
 }
