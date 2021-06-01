@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="0.0" y="80.0">it22105.reviewer</node>
+    <node x="0.0" y="235.0">it22105.fullPaper</node>
+    <node x="248.0" y="80.0">it22105.organiser</node>
+    <node x="132.0" y="0.0">it22105.person</node>
+    <node x="132.0" y="80.0">it22105.author</node>
+    <node x="140.0" y="235.0">it22105.paperInProgress</node>
+    <node x="90.0" y="155.0">it22105.article</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="it22105.author" target="it22105.person">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="it22105.organiser" target="it22105.person">
+      <point x="0.0" y="-15.0" />
+      <point x="308.0" y="55.0" />
+      <point x="212.0" y="55.0" />
+      <point x="32.0" y="15.0" />
+    </edge>
+    <edge source="it22105.fullPaper" target="it22105.article">
+      <point x="0.0" y="-15.0" />
+      <point x="60.0" y="210.0" />
+      <point x="116.0" y="210.0" />
+      <point x="-26.0" y="15.0" />
+    </edge>
+    <edge source="it22105.reviewer" target="it22105.person">
+      <point x="0.0" y="-15.0" />
+      <point x="56.0" y="55.0" />
+      <point x="148.0" y="55.0" />
+      <point x="-32.0" y="15.0" />
+    </edge>
+    <edge source="it22105.paperInProgress" target="it22105.article">
+      <point x="0.0" y="-15.0" />
+      <point x="224.0" y="210.0" />
+      <point x="168.0" y="210.0" />
+      <point x="26.0" y="15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="204.5" y="203.0" />
+  <SelectedNodes>
+    <node>it22105.reviewer</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
