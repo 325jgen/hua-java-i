@@ -1,10 +1,8 @@
 package it22105.Users;
 
-import it22105.it22105;
-
 import java.util.Scanner;
 
-public class person {
+public abstract class person {
     private String name;
     private String surname;
     private String title; // Not necessary
@@ -13,9 +11,8 @@ public class person {
 
     Scanner input = new Scanner(System.in);
 
-    public person() {
-        System.out.println("Γράψτε το όνομα σας:");
-        this.name = input.next();
+    public person(String name) {
+        this.name = name;
 
         System.out.println("Γράψτε το επίθετο σας:");
         this.surname = input.next();

@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Random;
 
-public class article {
+public abstract class article {
     Scanner input = new Scanner(System.in);
     Random rnd = new Random();
     private int ID;
@@ -13,7 +13,15 @@ public class article {
     private String[] authors = new String[2]; // Up to 2 authors
     private int[] score = new int[4]; // Ερευνητική συνεισφορά, ερευνητικά αποτελέσματα, ερευνητική μεθοδολογία, καινοτομία
 
-    public static int IDCounter = 0;
+    public static int IDCounter = 4;
+
+    public article(int ID, String title, String[] keywords, String[] authors, int[] score) {
+        this.ID = ID;
+        this.title = title;
+        this.keywords = keywords;
+        this.authors = authors;
+        this.score = score;
+    }
 
     public article() {
         System.out.println("Γράψε τον τίτλο του άρθρου:");
@@ -57,7 +65,11 @@ public class article {
     }
 
     public int howManyAuthors() {
-        return authors.length;
+        // authors[1] is null if the user typed exit when they were prompted to enter authors
+        if (authors[1] == null) {
+            return 1;
+        }
+        return 2;
     }
 
     public int getID() {
@@ -76,8 +88,16 @@ public class article {
         this.title = title;
     }
 
-    public String[] getAuthors() {
+    public String[] getAuthorsArray() {
         return authors;
+    }
+
+    public String getAuthors(int index) {
+        if (index == 0)
+            return authors[0];
+        else if (index == 1)
+            return authors[1];
+        return null;
     }
 
     public void setAuthors(String[] authors) {

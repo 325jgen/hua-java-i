@@ -10,13 +10,17 @@ import java.util.Scanner;
 public class it22105 {
     public static Scanner input = new Scanner(System.in);
 
+    public static ArrayList<article> articles = new ArrayList<>();
+    public static ArrayList<person> users = new ArrayList<>();
+
+
     public static void main(String[] args) {
         int choice;
         menuPrintWelcome();
 
         // Οι 2 λίστες που θα χρειαστούμε για να
-        ArrayList<article> articles = new ArrayList<>();
-        ArrayList<person> users = new ArrayList<>();
+
+        defaultArticles();
 
         while (true) {
             choice = input.nextInt();
@@ -26,6 +30,11 @@ public class it22105 {
                     System.out.println("Πες μου τι τύπου άρθρο θες να εισάγεις στο σύστημα");
                     System.out.println("Οι επιλογές είναι 1 για πλήρες άρθρο (Full Paper) και 2 για άρθρο σε-πρόοδο (paper-in-progress):");
                     int type = input.nextInt();
+                    // Checking input
+                    while (type != 1 && type != 2) {
+                        System.out.println("Δώσατε αριθμό διαφορετικό του 1 ή 2\nΠαρακαλώ προσπαθήστε ξανά");
+                        type = input.nextInt();
+                    }
 
                     if (type == 1) {
                         fullPaper ArticleFullPaper = new fullPaper();
@@ -33,41 +42,39 @@ public class it22105 {
                         // Μετά την εισαγωγή των στοιχείων, αποθηκεύουμε το αντικείμενο στην λίστα
                         articles.add(ArticleFullPaper);
                     }
-                    else if (type == 2) {
+                    else {
                         paperInProgress ArticlePaperInProgress = new paperInProgress();
                         System.out.println(ArticlePaperInProgress.toString());
                         // Μετά την εισαγωγή των στοιχείων, αποθηκεύουμε το αντικείμενο στην λίστα
                         articles.add(ArticlePaperInProgress);
                     }
-                    else {
-                        System.out.println("Λάθος εισαγωγή τύπου...");
-                    }
 
-                    for (int i = 0; i < articles.get(articles.size()-1).howManyAuthors(); i++) {
-                        System.out.println("");
-                        System.out.println("Είστε Οργανωτής, Συγγραφέας ή Αξιολογητής;");
-                        System.out.println("Οι επιλογές με την σειρά είναι 1, 2 και 3");
-                        type = input.nextInt();
-                        while (type != 1 && type != 2 && type != 3) {
-                            System.out.println("Δώσατε αριθμό διαφορετικό του 1, 2 ή 3\nΠαρακαλώ προσπαθήστε ξανά");
-                            type = input.nextInt();
-                        }
-
-                        switch (type) {
-                            case 1:
-                                organiser userOrganiser = new organiser();
-                                users.add(userOrganiser);
-                                break;
-                            case 2:
-                                author userAuthor = new author();
-                                users.add(userAuthor);
-                                break;
-                            case 3:
-                                reviewer userReviewer = new reviewer();
-                                users.add(userReviewer);
-                                break;
-                        }
-                    }
+//                    for (int i = 0; i < articles.get(articles.size()-1).howManyAuthors(); i++) {
+//                        System.out.println("");
+//                        System.out.println("Κ./Κα. " + articles.get(articles.size()-1).getAuthors(i) + " είστε Οργανωτής, Συγγραφέας ή Αξιολογητής;");
+//                        System.out.println("Οι επιλογές με την σειρά είναι 1, 2 και 3");
+//                        type = input.nextInt();
+//                        // Checking input
+//                        while (type != 1 && type != 2 && type != 3) {
+//                            System.out.println("Δώσατε αριθμό διαφορετικό του 1, 2 ή 3\nΠαρακαλώ προσπαθήστε ξανά");
+//                            type = input.nextInt();
+//                        }
+//
+//                        switch (type) {
+//                            case 1:
+//                                organiser userOrganiser = new organiser(articles.get(articles.size()-1).getAuthors(i));
+//                                users.add(userOrganiser);
+//                                break;
+//                            case 2:
+//                                author userAuthor = new author(articles.get(articles.size()-1).getAuthors(i));
+//                                users.add(userAuthor);
+//                                break;
+//                            case 3:
+//                                reviewer userReviewer = new reviewer(articles.get(articles.size()-1).getAuthors(i));
+//                                users.add(userReviewer);
+//                                break;
+//                        }
+//                    }
                     break;
                 case 2:
                     System.out.println("Εισάγετε τον κωδικό του άρθρου που ψάχνετε:");
@@ -90,7 +97,7 @@ public class it22105 {
                     }
 
                     // Printing out article if found
-                    System.out.println("Ο τίτλος του άρθρου με ID " + searchID + " είναι " + "'" + foundArticle.getTitle() + "'" + " και οι συγγραφείς είναι " + Arrays.toString(foundArticle.getAuthors()));
+                    System.out.println("Ο τίτλος του άρθρου με ID " + searchID + " είναι " + "'" + foundArticle.getTitle() + "'" + " και οι συγγραφείς είναι " + Arrays.toString(foundArticle.getAuthorsArray()));
 
 
                     break;
@@ -124,6 +131,20 @@ public class it22105 {
         System.out.println("5. Εμφάνιση αναφορών");
         System.out.println("");
         System.out.println("Για να βγείς από το σύστημα, βάλε οποιονδήποτε αριθμό εκτός του 1-5");
+    }
+
+    public static void defaultArticles() {
+        // fullPaper(int ID, String title, String[] keywords, String[] authors, int[] score, int size, String property, String propertyOrg
+        // paperInProgress(int ID, String title, String[] keywords, String[] authors, int[] score, String property, String propertyOrg)
+
+        // Creating two fullpapers,      one Case Study and one Regular
+        //      and two paperInProgress, one Case Study and one Regular
+
+        articles.add(new fullPaper(1, "Machine Monkey", new String[] {"IOT", "Machine Learning"}, new String[] {"Benjamin", "Joseph"}, new int[] {9, 5, 6, 3} ,12, "Case Study", null));
+        articles.add(new paperInProgress(2, "Morning Physics", new String[] {"Physics", "Lifestyle"}, new String[] {"Jordan", null}, new int[] {0, 0, 0, 0}, "Case Study", null));
+
+        articles.add(new fullPaper(3, "Vim and its decline", new String[] {"Text Editor", "Linux", "Terminal"}, new String[] {"Alexander", null}, new int[] {6, 9, 10, 2}, 8, "Regular", null));
+        articles.add(new paperInProgress(4, "Modern Mice", new String[] {"Input", "Mice", "Modern"}, new String[] {"Maria", "Stella"}, new int[] {0, 0, 0, 0}, "Regular", null));
     }
 
 //    public static void newUser(int numOfAuthors) {
