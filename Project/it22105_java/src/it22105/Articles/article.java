@@ -1,21 +1,23 @@
 package it22105.Articles;
 
+import it22105.Users.Author;
+
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Random;
 
-public abstract class article {
+public abstract class Article {
     Scanner input = new Scanner(System.in);
     Random rnd = new Random();
     private int ID;
     private String title;
     private String[] keywords = new String[3]; // Up to 3 keywords per article
-    private String[] authors = new String[2]; // Up to 2 authors
+    private Author[] authors = new Author[2]; // Up to 2 authors
     private int[] score = new int[4]; // Ερευνητική συνεισφορά, ερευνητικά αποτελέσματα, ερευνητική μεθοδολογία, καινοτομία
 
     public static int IDCounter = 4;
 
-    public article(int ID, String title, String[] keywords, String[] authors, int[] score) {
+    public Article(int ID, String title, String[] keywords, Author[] authors, int[] score) {
         this.ID = ID;
         this.title = title;
         this.keywords = keywords;
@@ -23,36 +25,23 @@ public abstract class article {
         this.score = score;
     }
 
-    public article() {
+    public Article() {
+        this.ID = ++IDCounter;
+
         System.out.println("Γράψε τον τίτλο του άρθρου:");
         this.title = input.next();
-
-        this.ID = ++IDCounter;
-        System.out.println("Ο κωδικός του άρθρου είναι " + ID);
 
         System.out.println("Δώσε μέχρι 3 keywords");
         System.out.println("Για να σταματήσεις να γράφεις keywords, γράψε exit");
         for (int i = 0; i < 3; i++) {
             this.keywords[i] = input.next();
-
             if (keywords[i].equals("exit")) {
                 this.keywords[i] = null;
                 break;
             }
         }
 
-        System.out.println("Δώσε τους συγγραφείς του άρθρου (μέχρι 2)");
-        System.out.println("Αν δεν υπάρχει δεύτερος συγγραφέας, γράψε exit");
-        this.authors[0] = input.next();
-        this.authors[1] = input.next();
-        if (authors[1].equals("exit")) {
-            this.authors[1] = null;
-        }
-
-        System.out.println("Δώσε βαθμό με την σειρά για Ερευνητική συνεισφορά, ερευνητικά αποτελέσματα, ερευνητική μεθοδολογία και καινοτομία:");
-        for (int i = 0; i < 4; i++) {
-            this.score[i] = input.nextInt();
-        }
+        // TODO fix author input
     }
 
     @Override
@@ -65,11 +54,14 @@ public abstract class article {
     }
 
     public int howManyAuthors() {
-        // authors[1] is null if the user typed exit when they were prompted to enter authors
-        if (authors[1] == null) {
-            return 1;
+        System.out.println("Πόσοι συγγραφείς δούλεψαν σε για αυτό το άρθρο; (μέχρι 2)");
+        int numOfAuthors = input.nextInt();
+        while (numOfAuthors < 1 || numOfAuthors > 2) {
+            System.out.println("Οι πιθανοί συγγραφείς που μπορεί το σύστημα να αποθηκεύσει είναι από 1 μέχρι 2");
+            System.out.println("Παρακαλώ προσπαθήστε ξανά");
+            numOfAuthors = input.nextInt();
         }
-        return 2;
+        return numOfAuthors;
     }
 
     public int getID() {
@@ -88,27 +80,31 @@ public abstract class article {
         this.title = title;
     }
 
-    public String[] getAuthorsArray() {
-        return authors;
-    }
-
-    public String getAuthors(int index) {
-        if (index == 0)
-            return authors[0];
-        else if (index == 1)
-            return authors[1];
-        return null;
-    }
-
-    public void setAuthors(String[] authors) {
-        this.authors = authors;
-    }
-
     public int[] getScore() {
         return score;
     }
 
     public void setScore(int[] score) {
         this.score = score;
+    }
+
+    public String[] getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String[] keywords) {
+        this.keywords = keywords;
+    }
+
+    public Author[] getAuthors() {
+        return authors;
+    }
+
+    public Author getAuthors(int index) {
+        return authors[index];
+    }
+
+    public void setAuthors(Author author, int index) {
+        this.authors[index] = author;
     }
 }

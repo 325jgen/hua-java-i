@@ -1,16 +1,18 @@
 package it22105.Articles;
 
-public class paperInProgress extends article {
+import it22105.Users.Author;
+
+public class PaperInProgress extends Article {
     private String property; // Regular or Case Study
     private String propertyOrg; // TODO Maybe I can change this with interfaces, will check
 
-    public paperInProgress(int ID, String title, String[] keywords, String[] authors, int[] score, String property, String propertyOrg) {
+    public PaperInProgress(int ID, String title, String[] keywords, Author[] authors, int[] score, String property, String propertyOrg) {
         super(ID, title, keywords, authors, score);
         this.property = property;
         this.propertyOrg = propertyOrg;
     }
 
-    public paperInProgress() {
+    public PaperInProgress() {
         super();
         System.out.println("Δώσε 1 αν το άρθρο είναι κανονικό και 2 αν το άρθρο είναι μελέτη περίπτωσης (case study)");
         this.property = input.next();
@@ -30,10 +32,30 @@ public class paperInProgress extends article {
         }
     }
 
+    public String getProperty() {
+        return property;
+    }
+
+    public void setProperty(String property) {
+        this.property = property;
+    }
+
+    public String getPropertyOrg() {
+        return propertyOrg;
+    }
+
+    public void setPropertyOrg(String propertyOrg) {
+        this.propertyOrg = propertyOrg;
+    }
+
     @Override
     public String toString() {
+        if (property.equals("Case Study")) {
+            return super.toString() +
+                    "\nΤύπος άρθρου: Paper-in-Progress, " + property +
+                    "\nΠεριβάλλον μελέτης περίπτωσης: " + propertyOrg;
+        }
         return super.toString() +
-                "\nΤύπος άρθρου: Full Paper, " + property +
-                "\nΠεριβάλλον μελέτης περίπτωσης: " + propertyOrg;
+                "\nΤύπος άρθρου: Paper-In-Progress, " + property;
     }
 }
