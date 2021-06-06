@@ -1,13 +1,14 @@
 package it22105.Articles;
 
 import it22105.Users.Author;
+import it22105.Users.Reviewer;
 
 public class PaperInProgress extends Article {
     private String property; // Regular or Case Study
     private String propertyOrg; // TODO Maybe I can change this with interfaces, will check
 
-    public PaperInProgress(int ID, String title, String[] keywords, Author[] authors, int[] score, String property, String propertyOrg) {
-        super(ID, title, keywords, authors, score);
+    public PaperInProgress(int ID, String title, String[] keywords, Author[] authors, Reviewer reviewer, int[] score, String property, String propertyOrg) {
+        super(ID, title, keywords, authors, reviewer, score);
         this.property = property;
         this.propertyOrg = propertyOrg;
     }

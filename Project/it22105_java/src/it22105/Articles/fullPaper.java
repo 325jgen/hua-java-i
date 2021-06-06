@@ -1,14 +1,15 @@
 package it22105.Articles;
 
 import it22105.Users.Author;
+import it22105.Users.Reviewer;
 
 public class FullPaper extends Article {
     private int size; // Full paper is also characterized by its size (8 or 12 pages)
     private String property; // Regular or Case Study
     private String propertyOrg; // TODO Maybe I can change this with interfaces, will check. Not only that, but the constructors and the toString method of both fullPaper and the paperInProgress classes are literally the same, but I don't think they should be in the article super class. Will see, probably will implement it to the superclass though, fullpaper and paperInProgress classes are pretty much useless right now...
 
-    public FullPaper(int ID, String title, String[] keywords, Author[] authors, int[] score, int size, String property, String propertyOrg) {
-        super (ID, title, keywords, authors, score);
+    public FullPaper(int ID, String title, String[] keywords, Author[] authors, Reviewer reviewer, int[] score, int size, String property, String propertyOrg) {
+        super (ID, title, keywords, authors, reviewer, score);
         this.size = size;
         this.property = property;
         this.propertyOrg = propertyOrg;

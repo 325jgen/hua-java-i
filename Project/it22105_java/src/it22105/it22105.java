@@ -120,18 +120,45 @@ public class it22105 {
                     System.out.println(foundArticle.toString());
 
 
-                    System.out.println("Για την εισαγωγή αξιολογητή στο σύστημα παρακαλώ να γράψετε το email σας:");
+                    System.out.println("\nΓια την εισαγωγή αξιολογητή στο σύστημα παρακαλώ να γράψετε το email σας:");
                     String searchEmail = input.next();
 
+                    boolean emailExists = false;
+                    emailExists = findReviewer(searchEmail);
 
+                    if (!emailExists) {
+                        // Adding new reviewer to the users global ArrayList
+                        users.add(new Reviewer(searchEmail));
+
+                        // Adding reviewer to the article
+                        foundArticle.setReviewer((Reviewer) users.get(users.size()-1));
+                    }
 
                     break;
                 case 3:
+                    // Ψάχνει το πρόγραμμα για το άρθρο
                     System.out.println("Για να αξιολογήσετε το άρθρο που θέλετε παρακαλώ να εισάγετε τον κωδικό του άρθρου: ");
                     searchID = input.nextInt();
                     if (!findArticle(searchID)) {
                         break;
                     }
+
+                    // foundArticle is already in scope from case 2
+                    foundArticle = articles.get(--searchID);
+
+                    // Έλεγχος email αξιολογητή
+                    System.out.println("Παρακαλώ γράψτε το email σας: ");
+                    searchEmail = input.next();
+                    if (foundArticle.getReviewer().getEmail().equals(searchEmail)) {
+                        // Letting reviewer score the article
+                        System.out.println("\nπαρακαλώ δώστε την βαθμολογία σας για το άρθρο");
+                        System.out.println("Με την σειρά να εισάγετε την βαθμολογία για την Ερευνητική συνεισφορά, Ερευνητικά αποτελέσματα, Ερευνητική μεθοδολογία και την καινοτομία");
+                        foundArticle.setScore();
+                    }
+                    else {
+                        System.out.println("Δεν εισάγατε το σωστό email...");
+                    }
+
 
                     break;
                 case 4:
@@ -185,6 +212,7 @@ public class it22105 {
                         "Mr.",
                         "bjpet2@gmail.com",
                         "Google"), null},
+                (Reviewer) (users.get(0)),
                 new int[] {9, 5, 6, 3} ,
                 12,
                 "Case Study",
@@ -197,6 +225,7 @@ public class it22105 {
                         "Dr.",
                         "jddr@yahoo.com",
                         "Yahoo"), null},
+                null,
                 new int[] {0, 0, 0, 0},
                 "Case Study",
                 null));
@@ -209,6 +238,7 @@ public class it22105 {
                         "Mr.",
                         "alexbl@gmail.com",
                         "Facebook"), null},
+                (Reviewer) (users.get(1)),
                 new int[] {6, 9, 10, 2},
                 8,
                 "Regular",
@@ -226,6 +256,7 @@ public class it22105 {
                                       "PhD candidate",
                                       "stellst@gmail.com",
                                       "HUA")},
+                null,
                 new int[] {0, 0, 0, 0},
                 "Regular",
                 null));
@@ -273,14 +304,14 @@ public class it22105 {
 
                         // articles.get(articles.size()-1) μας δινει το τελευταιο αρθρο στο ArrayList
                         connectAuthorToArticle(articles.get(articles.size()-1), searchArticle.getAuthors()[j]);
-                        return false;
+                        return true;
                     }
                 }
                 j++;
             }
         }
         // Αν δεν μπει στην εσωτερική if, τοτε γυρνάει true
-        return true;
+        return false;
     }
 
     public static boolean findReviewer(String searchEmail) {
@@ -296,14 +327,14 @@ public class it22105 {
 
                         // articles.get(articles.size()-1) μας δινει το τελευταιο αρθρο στο ArrayList
                         // TODO: connect reviewer with article
-                        return false;
+                        return true;
                     }
                 }
                 j++;
             }
         }
         // Αν δεν μπει στην εσωτερική if, τοτε γυρνάει true
-        return true;
+        return false;
     }
 
 

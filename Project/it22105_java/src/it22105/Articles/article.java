@@ -19,11 +19,12 @@ public abstract class Article {
 
     public static int IDCounter = 4;
 
-    public Article(int ID, String title, String[] keywords, Author[] authors, int[] score) {
+    public Article(int ID, String title, String[] keywords, Author[] authors, Reviewer reviewer, int[] score) {
         this.ID = ID;
         this.title = title;
         this.keywords = keywords;
         this.authors = authors;
+        this.reviewer = reviewer;
         this.score = score;
     }
 
@@ -48,11 +49,20 @@ public abstract class Article {
 
     @Override
     public String toString() {
-        return  "\nΚωδικός: " + ID +
-                "\nΤίτλος: " + title +
-                "\nKeywords: " + Arrays.toString(keywords) +
-                "\nΣυγγραφείς: " + Arrays.toString(authors) +
-                "\nΒαθμολογίες: " + Arrays.toString(score);
+        if (reviewer == null) {
+            return "\nΚωδικός άρθρου: " + ID +
+                    "\nΤίτλος άρθρου: " + title +
+                    "\nKeywords: " + Arrays.toString(keywords) +
+                    "\nΣυγγραφείς: " + Arrays.toString(authors);
+        }
+        else {
+            return "\nΚωδικός άρθρου: " + ID +
+                    "\nΤίτλος άρθρου: " + title +
+                    "\nKeywords: " + Arrays.toString(keywords) +
+                    "\nΣυγγραφείς: " + Arrays.toString(authors) +
+                    "\nΑξιολογητής: " + reviewer.toString() +
+                    "\nΒαθμολογία: " + Arrays.toString(score);
+        }
     }
 
     public int howManyAuthors() {
@@ -86,8 +96,11 @@ public abstract class Article {
         return score;
     }
 
-    public void setScore(int[] score) {
-        this.score = score;
+    public void setScore() {
+        System.out.println("Δώσε βαθμό με την σειρά για Ερευνητική συνεισφορά, Ερευνητικά αποτελέσματα, Ερευνητική μεθοδολογία και καινοτομία:");
+        for (int i = 0; i < 4; i++) {
+            this.score[i] = input.nextInt();
+        }
     }
 
     public String[] getKeywords() {
