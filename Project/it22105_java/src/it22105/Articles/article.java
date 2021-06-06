@@ -1,6 +1,7 @@
 package it22105.Articles;
 
 import it22105.Users.Author;
+import it22105.Users.Reviewer;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -13,6 +14,7 @@ public abstract class Article {
     private String title;
     private String[] keywords = new String[3]; // Up to 3 keywords per article
     private Author[] authors = new Author[2]; // Up to 2 authors
+    private Reviewer reviewer;
     private int[] score = new int[4]; // Ερευνητική συνεισφορά, ερευνητικά αποτελέσματα, ερευνητική μεθοδολογία, καινοτομία
 
     public static int IDCounter = 4;
@@ -54,7 +56,7 @@ public abstract class Article {
     }
 
     public int howManyAuthors() {
-        System.out.println("Πόσοι συγγραφείς δούλεψαν σε για αυτό το άρθρο; (μέχρι 2)");
+        System.out.println("\nΠόσοι συγγραφείς δούλεψαν σε για αυτό το άρθρο; (μέχρι 2)");
         int numOfAuthors = input.nextInt();
         while (numOfAuthors < 1 || numOfAuthors > 2) {
             System.out.println("Οι πιθανοί συγγραφείς που μπορεί το σύστημα να αποθηκεύσει είναι από 1 μέχρι 2");
@@ -106,5 +108,17 @@ public abstract class Article {
 
     public void setAuthors(Author author, int index) {
         this.authors[index] = author;
+    }
+
+    public void setAuthors(Author[] authors) {
+        this.authors = authors;
+    }
+
+    public Reviewer getReviewer() {
+        return reviewer;
+    }
+
+    public void setReviewer(Reviewer reviewer) {
+        this.reviewer = reviewer;
     }
 }

@@ -11,17 +11,18 @@ public abstract class Person {
 
     Scanner input = new Scanner(System.in);
 
-    public Person(String name) {
-        this.name = name;
+    public Person(String email) {
+        System.out.println("Γράψτε το όνομα σας:");
+        this.name = input.next();
 
         System.out.println("Γράψτε το επίθετο σας:");
         this.surname = input.next();
 
-        // TODO: Make sure the email the user inputs is correct
-        System.out.println("Γράψτε το email σας:");
-        this.email = input.next();
+        this.email = email;
 
         System.out.println("Γράψε τον τίτλο σας (γράψτε exit αν δεν έχετε τίτλο):");
+        System.out.println("Οι επιλογές σας είναι: Prof., Dr., Mr., Mrs., PhD Candidate, ");
+        // TODO: check input
         this.title = input.next();
         if (title.equals("exit")) {
             this.title = null;
@@ -48,7 +49,7 @@ public abstract class Person {
                 "\nΌνομα: " + name +
                 "\nΕπίθετο: " + surname +
                 "\nEmail: " + email +
-                "\nΟργανισμός: " + institution;
+                "\nΟργανισμός: " + institution + "\n";
     }
 
     public String getName() {

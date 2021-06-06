@@ -23,20 +23,7 @@ public class it22105 {
         menuPrintWelcome();
 
 
-        defaultArticles();
-
-        // DEBUG
-//        for (int i = 0; i < 4; i++) {
-//            Author[] SearchAuthors = articles.get(i).getAuthorsArray();
-//            for (int j = 0; j < 2; j++) {
-//                if (SearchAuthors[j] != null) {
-//                    System.out.println(SearchAuthors[j].toString());
-//                }
-//            }
-//        }
-
-//        System.out.println("DEBUG\tPrinting out author of article one:\n");
-//        System.out.println(Arrays.toString(articles.get(1).getAuthors()));
+        defaultValues();
 
         while (true) {
             choice = input.nextInt();
@@ -60,7 +47,8 @@ public class it22105 {
 
                         // Μετά την εισαγωγή των στοιχείων, αποθηκεύουμε το αντικείμενο στην λίστα
                         articles.add(ArticleFullPaper);
-                    } else {
+                    }
+                    else {
                         PaperInProgress ArticlePaperInProgress = new PaperInProgress();
 
                         // Printing out all characteristics of class
@@ -75,26 +63,46 @@ public class it22105 {
                     int iterations = articles.get(articles.size()-1).howManyAuthors();
                     for (int i = 0; i < iterations; i++) {
                         Article currentArticle = articles.get(articles.size()-1);
-                        String email;
-                        System.out.println("\nΠαρακαλώ πληκτρολογείστε το email σας:");
-                        email = input.next();
+                        boolean emailExists;
+                        String searchEmail;
+                        System.out.println("\nΠαρακαλώ o " + (i+1) + "ος συγγραφέας να πληκτρολογήσει το email του:");
+                        searchEmail = input.next();
 
+                        emailExists = findAuthor(searchEmail);
+//                        // Ψάχνουμε σε όλα τα άρθα στο σύστημα αν υπάρχει το email που έδωσε ο χρήστης
+//                        int j;
+//                        for (Article searchArticle : articles) {
+//                            // Επανάληψη 2 φορές για να ελεγξούμε αν υπάρχουν 2 συγγραφείς
+//                            j = 0;
+//                            while (j < 2) {
+//                                if (searchArticle.getAuthors()[j] != null) {
+//                                    if (searchArticle.getAuthors()[j].getEmail().equals(searchEmail)) {
+//                                        emailExists = true;
+//                                        System.out.println("Ο χρήστης με το email " + searchEmail + " υπάρχει ήδη στο σύστημα...");
+//                                        System.out.println("Το σύστημα θα συνδέσει το άρθρο που υποβάλλατε με τον ήδη υπάροχων συγγραφέα");
+//                                        connectAuthorToArticle(articles.get(articles.size()-1), searchArticle.getAuthors()[j]);
+//                                    }
+//                                }
+//                                j++;
+//                            }
+//                            // Αν σηκωθεί το flag του email exists, σπαει το for loop
+//                            if (emailExists) {
+//                                break;
+//                            }
+//                        }
 
-                        // Ψάχνουμε σε όλα τα άρθα στο σύστημα αν υπάρχει το email που έδωσε ο χρήστης
-                        for (Article searchArticle : articles) {
-                            // Επανάληψη 2 φορών για να ελεγξεί αν υπάρχουν 2 συγγραφείς
-                            for (int j = 0; j < 2; j++) {
-                                if (searchArticle.getAuthors()[j] != null) {
-                                    if (searchArticle.getAuthors()[j].getEmail().equals(email)) {
-                                        System.out.println("Ο χρήστης με το email " + email + " υπάρχει ήδη στο σύστημα...");
-                                        System.out.println("Το σύστημα θα συνδέσει το άρθρο που υποβάλλατε με τον ήδη υπάροχων συγγραφέα");
-                                        connectAuthorToArticle(articles.get(articles.size()-1), searchArticle.getAuthors()[j]);
-                                    }
-                                }
-                            }
+                        // Εάν στις επαναλήψεις πάνω δεν βρέθηκε παρόμοιο email, τότε ο χρήστης θα εισάγει τα στοιχεία του
+                        if (!emailExists) {
+                            System.out.println("Ο " + (i+1) + "ος συγγραφέας να εισάγει τα στοιχεία του:");
+                            articles.get(articles.size()-1).setAuthors(new Author(searchEmail), i);
                         }
 
                     }
+
+                    // TODO: Implement a method which will check if an article with the same title and same authors exists
+                    // Pretty much needs to cross check title with all the articles + check emails (an author's email is
+                    // the first information the program checks the arraylist to see if it already exists)
+                    // checkDuplicateArticle();
 
                     break;
                 case 2:
@@ -110,6 +118,13 @@ public class it22105 {
                     // also printing out type of article
                     System.out.println("Στο άρθρο με κωδικό " + searchID + " αντιστοιχούν οι εξής συγγραφείς:");
                     System.out.println(foundArticle.toString());
+
+
+                    System.out.println("Για την εισαγωγή αξιολογητή στο σύστημα παρακαλώ να γράψετε το email σας:");
+                    String searchEmail = input.next();
+
+
+
                     break;
                 case 3:
                     System.out.println("Για να αξιολογήσετε το άρθρο που θέλετε παρακαλώ να εισάγετε τον κωδικό του άρθρου: ");
@@ -149,12 +164,18 @@ public class it22105 {
         System.out.println("Για να βγείς από το σύστημα, βάλε οποιονδήποτε αριθμό εκτός του 1-5");
     }
 
-    public static void defaultArticles() {
+    public static void defaultValues() {
         // fullPaper(int ID, String title, String[] keywords, String[] authors, int[] score, int size, String property, String propertyOrg
         // paperInProgress(int ID, String title, String[] keywords, String[] authors, int[] score, String property, String propertyOrg)
 
         // Creating two Fullpapers,      one Case Study and one Regular
         //      and two PaperInProgress, one Case Study and one Regular
+        // Also creating two default reviewers
+
+        users.add(new Reviewer("Joshua", "Black", "Mr.", "joblk22@gmail.com", "Uni"));
+
+        users.add(new Reviewer("Maria", "Newport", "Mrs.", "marnewp@gmail.com", "Uni"));
+
 
         articles.add(new FullPaper(1,
                 "Machine Monkey",
@@ -209,6 +230,9 @@ public class it22105 {
                 "Regular",
                 null));
 
+
+
+
     }
 
     public static boolean findArticle(int searchID) {
@@ -231,7 +255,55 @@ public class it22105 {
         if (ArticleSearch.getAuthors(0) != null) {
             ArticleSearch.setAuthors(ConnectAuthor, 1);
         }
-        ArticleSearch.setAuthors(ConnectAuthor, 0);
+        else {
+            ArticleSearch.setAuthors(ConnectAuthor, 0);
+        }
+    }
+
+    public static boolean findAuthor(String searchEmail) {
+        int j;
+        for (Article searchArticle : articles) {
+            // Επανάληψη 2 φορές για να ελεγξούμε αν υπάρχουν 2 συγγραφείς
+            j = 0;
+            while (j < 2) {
+                if (searchArticle.getAuthors()[j] != null) {
+                    if (searchArticle.getAuthors()[j].getEmail().equals(searchEmail)) {
+                        System.out.println("Ο χρήστης με το email " + searchEmail + " υπάρχει ήδη στο σύστημα...");
+                        System.out.println("Το σύστημα θα συνδέσει το άρθρο που υποβάλλατε με τον ήδη υπάρχων συγγραφέα");
+
+                        // articles.get(articles.size()-1) μας δινει το τελευταιο αρθρο στο ArrayList
+                        connectAuthorToArticle(articles.get(articles.size()-1), searchArticle.getAuthors()[j]);
+                        return false;
+                    }
+                }
+                j++;
+            }
+        }
+        // Αν δεν μπει στην εσωτερική if, τοτε γυρνάει true
+        return true;
+    }
+
+    public static boolean findReviewer(String searchEmail) {
+        int j;
+        for (Person searchReviewer : users) {
+            // Επανάληψη 2 φορές για να ελεγξούμε αν υπάρχουν 2 συγγραφείς
+            j = 0;
+            while (j < 2) {
+                if (searchReviewer != null) {
+                    if (searchReviewer.getEmail().equals(searchEmail)) {
+                        System.out.println("Ο αξιολογητής με το email " + searchEmail + " υπάρχει ήδη στο σύστημα...");
+                        System.out.println("Το σύστημα θα συνδέσει το άρθρο που υποβάλλατε με τον ήδη υπάρχων αξιολογητή");
+
+                        // articles.get(articles.size()-1) μας δινει το τελευταιο αρθρο στο ArrayList
+                        // TODO: connect reviewer with article
+                        return false;
+                    }
+                }
+                j++;
+            }
+        }
+        // Αν δεν μπει στην εσωτερική if, τοτε γυρνάει true
+        return true;
     }
 
 
