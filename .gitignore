@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 /NetBeans/helloworld/nbproject/private/
 /NetBeans/helloworld/build/
 /NetBeans/Clock/nbproject/private/
@@ -9,3 +10,8 @@
 /NetBeans/Hua/nbproject/private/
 /NetBeans/Hua/build/
 /NetBeans/Hua/dist/
+=======
+/IntelliJ
+/testing
+*.pdf
+>>>>>>> Stashed changes
