@@ -29,9 +29,9 @@ public abstract class Person {
         }
 
         System.out.println("Σε ποιον οργανισμό ανήκετε; (γράψτε exit αν δεν εργάζεστε με κάποιον οργανισμό):");
-        this.title = input.next();
-        if (title.equals("exit")) {
-            this.title = null;
+        this.institution = input.next();
+        if (institution.equals("exit")) {
+            this.institution = null;
         }
     }
 
