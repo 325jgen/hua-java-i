@@ -16,32 +16,56 @@ public abstract class Article {
     private Author[] authors = new Author[2]; // Up to 2 authors
     private Reviewer reviewer;
     private int[] score = new int[4]; // Ερευνητική συνεισφορά, ερευνητικά αποτελέσματα, ερευνητική μεθοδολογία, καινοτομία
+    private String property;
+    private String propertyOrg;
+
 
     public static int IDCounter = 4;
 
-    public Article(int ID, String title, String[] keywords, Author[] authors, Reviewer reviewer, int[] score) {
+    public Article(int ID, String title, String[] keywords, Author[] authors, Reviewer reviewer, int[] score, String property, String propertyOrg) {
         this.ID = ID;
         this.title = title;
         this.keywords = keywords;
         this.authors = authors;
         this.reviewer = reviewer;
         this.score = score;
+        this.property = property;
+        this.propertyOrg = propertyOrg;
     }
 
     public Article() {
         this.ID = ++IDCounter;
 
         System.out.println("Γράψε τον τίτλο του άρθρου:");
-        this.title = input.next();
+        this.title = input.nextLine();
 
         System.out.println("Δώσε μέχρι 3 keywords");
         System.out.println("Για να σταματήσεις να γράφεις keywords, γράψε exit");
         for (int i = 0; i < 3; i++) {
-            this.keywords[i] = input.next();
+            this.keywords[i] = input.nextLine();
             if (keywords[i].equals("exit")) {
                 this.keywords[i] = null;
                 break;
             }
+        }
+
+
+        // Τύπος άρθρου
+        System.out.println("Δώσε 1 αν το άρθρο είναι κανονικό και 2 αν το άρθρο είναι μελέτη περίπτωσης (case study)");
+        this.property = input.next();
+
+        // Checking input
+        while (!(property.equals("1")) && !(property.equals("2"))) {
+            System.out.println("Δώσατε αριθμό διαφορετικό του 1 ή του 2\nΠαρακαλώ προσπαθήστε ξανά");
+            this.property = input.next();
+        }
+
+        if (property.equals("2")) {
+            this.property = "Case Study";
+            System.out.println("Ποιό είναι το περιβάλλον της μελέτης στο οποίο βασίζεται το άρθρο;");
+            this.propertyOrg = input.nextLine();
+        } else {
+            this.property = "Regular";
         }
 
         // TODO fix author input
@@ -97,7 +121,6 @@ public abstract class Article {
     }
 
     public void setScore() {
-        System.out.println("Δώσε βαθμό με την σειρά για Ερευνητική συνεισφορά, Ερευνητικά αποτελέσματα, Ερευνητική μεθοδολογία και καινοτομία:");
         for (int i = 0; i < 4; i++) {
             this.score[i] = input.nextInt();
         }
@@ -133,5 +156,25 @@ public abstract class Article {
 
     public void setReviewer(Reviewer reviewer) {
         this.reviewer = reviewer;
+    }
+
+    public void setScore(int[] score) {
+        this.score = score;
+    }
+
+    public String getProperty() {
+        return property;
+    }
+
+    public void setProperty(String property) {
+        this.property = property;
+    }
+
+    public String getPropertyOrg() {
+        return propertyOrg;
+    }
+
+    public void setPropertyOrg(String propertyOrg) {
+        this.propertyOrg = propertyOrg;
     }
 }
