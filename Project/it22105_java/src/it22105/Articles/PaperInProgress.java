@@ -3,6 +3,7 @@ package it22105.Articles;
 import it22105.Users.Author;
 import it22105.Users.Reviewer;
 
+
 public class PaperInProgress extends Article {
     // TODO: MAYBE TRANSFER THE PROPERTY/PROPERTYORG TO ARTICLE, SINCE IT'S IDENTICAL WITH BOTH FULLPAPER AND PAPERINPROGRESS
     // TODO Maybe I can change this with interfaces, will check

@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Random;
 
+
 public abstract class Article {
     Scanner input = new Scanner(System.in);
     Random rnd = new Random();
