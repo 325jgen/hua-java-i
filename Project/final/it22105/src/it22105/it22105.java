@@ -113,6 +113,20 @@ public class it22105 {
         System.out.println("Δεν βρέθηκε άρθρο με το ID που εισάγατε...");
         return false;
     }
+    
+    public static boolean checkDuplicateArticle(Article checkArticle) {
+        Article iterationArticle;
+        // Για κάθε άρθρο πλην το τελευταίο, δηλαδή το checkArticle
+        for (int i = 0; i < articles.size()-1 ; i++) {
+            iterationArticle = articles.get(i);
+            if (checkArticle.getTitle().equals(iterationArticle.getTitle()) &&
+                    Arrays.equals(checkArticle.getAuthors(), iterationArticle.getAuthors())) {
+                // Εάν βρεθεί διπλό άρθρο, τότε γυρνάει true
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static void connectAuthorToArticle(Article ArticleSearch, Author ConnectAuthor) {
         // If an author already exists in the first index of the array, connect author to the second one
@@ -176,6 +190,11 @@ public class it22105 {
                 score[2] == 0 &&
                 score[3] == 0;
     }
+    
+    public static boolean isValidEmail(String email) {
+        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        return email.matches(regex);
+    }
 
     public static void main(String[] args) {
         int choice;
@@ -201,16 +220,10 @@ public class it22105 {
                     }
 
                     if (type == 1) {
-                        // TODO: I can add the constructor in the articles.add method -- maybe i will make it like that
-                        FullPaper ArticleFullPaper = new FullPaper();
-
-                        // Μετά την εισαγωγή των στοιχείων, αποθηκεύουμε το αντικείμενο στην λίστα
-                        articles.add(ArticleFullPaper);
-                    } else {
-                        PaperInProgress ArticlePaperInProgress = new PaperInProgress();
-
-                        // Μετά την εισαγωγή των στοιχείων, αποθηκεύουμε το αντικείμενο στην λίστα
-                        articles.add(ArticlePaperInProgress);
+                        articles.add(new FullPaper());
+                    } 
+                    else {
+                        articles.add(new PaperInProgress());
                     }
 
 
@@ -220,13 +233,18 @@ public class it22105 {
                         boolean emailExists;
                         System.out.println("\nΠαρακαλώ o " + (i + 1) + "ος συγγραφέας να πληκτρολογήσει το email του:");
                         searchEmail = input.next();
+                        // Έλεγχος εαν το email γράφτηκε με τον σωστό τρόπο
+                        while (!isValidEmail(searchEmail)) {
+                            System.out.println("\nΔεν γράψατε σωστά το email\nΤα email πρέπει να είναι του τύπου: xxx@yyy.zzz\nΠροσπαθήστε ξανά");
+                            searchEmail = input.next();
+                        }
                         
                         // Έλεγχος για το δεύτερο email, αν 2ος συγγραφέας έχει το ίδιο email με τον πρώτο, 
                         // γυρνάμε πίσω την επανάληψη
                         if (i == 1) {
                             if (articles.get(articles.size() - 1).getAuthors()[0].getEmail().equals(searchEmail)) {
                                 System.out.println("Για τον δεύτερο συγγραφέα εισάγατε το ίδιο email με τον πρώτο");
-                                System.out.println("Προσπαθείστε ξανά\n");
+                                System.out.println("Προσπαθήστε ξανά\n");
                                 i--;
                                 continue;
                             }
@@ -237,7 +255,6 @@ public class it22105 {
 
                         // Εάν στις επαναλήψεις πάνω δεν βρέθηκε παρόμοιο email, τότε ο χρήστης θα εισάγει τα στοιχεία του
                         if (!emailExists) {
-                            System.out.println("Ο " + (i + 1) + "ος συγγραφέας να εισάγει τα στοιχεία του:");
                             // Αποθηκεύουμε τα στοιχεία του συγγραφέα[i] στο άρθρο
                             articles.get(articles.size() - 1).setAuthors(new Author(searchEmail), i);
                         }
@@ -248,11 +265,15 @@ public class it22105 {
                     // Pretty much needs to cross check title with all the articles + check emails (an author's email is
                     // the first information the program checks the arraylist to see if it already exists)
                     // checkDuplicateArticle();
+                    if (checkDuplicateArticle(articles.get(articles.size() -1))) {
+                        System.out.println("\nΥπάρχει ήδη άρθρο στο σύστημα μας με τους ίδιους συγγραφείς και τον ίδιο τίτλο");
+                        // Διαγραφή του άρθρου από το σύστημα
+                        articles.remove(articles.get(articles.size()-1));
+                        break;
+                    }
 
                     // Εκτύπωση στοιχείων άρθρου
                     System.out.println(articles.get(articles.size()-1).toString());
-                    
-                    // Έλεγχος εάν υπάρχει άρθρο στο σύστημα με τον ίδιο τίτλο και τους ίδιους συγγραφείς
                     
                     break;
                     
@@ -279,21 +300,28 @@ public class it22105 {
 
                     // Έλεγχος email αξιολογητή για το εάν υπάρχει στο σύστημα
                     System.out.println("\nΓια την εισαγωγή αξιολογητή στο σύστημα παρακαλώ να γράψετε το email σας:");
-                    searchEmail = input.next("^(.+)@(.+)$");
+                    searchEmail = input.next();
+                        // Έλεγχος εαν το email γράφτηκε με τον σωστό τρόπο
+                    while (!isValidEmail(searchEmail)) {
+                        System.out.println("\nΔεν γράψατε σωστά το email\nΤα email πρέπει να είναι του τύπου: xxx@yyy.zzz\nΠροσπαθήστε ξανά");
+                        searchEmail = input.next();
+                    }
                     
                     // Εάν το email του αξιολογητή είναι ίδιο με κάποιο από τα email των συγγραφέων
                     // τότε δεν πρέπει να γίνει αξιολόγηση
                     // TODO: Can make this a method
-                    if (foundArticle.getAuthors().length == 2) {
+                    if (foundArticle.getAuthors()[1] != null) {
                         // Αν το email του πρώτου ή του δεύτερου συγγραφέα είναι ίδιο με τον αξιολογητή
                         if (foundArticle.getAuthors()[0].getEmail().equals(searchEmail) ||
                                 foundArticle.getAuthors()[1].getEmail().equals(searchEmail)) {
                             System.out.println("Κανείς απο τους συγγραφείς δεν μπορεί να είναι και αξιολογητής του άρθρου του");
+                            break;
                         }
                     }
                     else {
                         if (foundArticle.getAuthors()[0].getEmail().equals(searchEmail)) {
                             System.out.println("Κανείς απο τους συγγραφείς δεν μπορεί να είναι και αξιολογητής του άρθρου του");
+                            break;
                         }
                     }
                     
@@ -323,6 +351,11 @@ public class it22105 {
                     // Έλεγχος email αξιολογητή
                     System.out.println("Παρακαλώ γράψτε το email σας: ");
                     searchEmail = input.next();
+                        // Έλεγχος εαν το email γράφτηκε με τον σωστό τρόπο
+                    while (!isValidEmail(searchEmail)) {
+                        System.out.println("\nΔεν γράψατε σωστά το email\nΤα email πρέπει να είναι του τύπου: xxx@yyy.zzz\nΠροσπαθήστε ξανά");
+                        searchEmail = input.next();
+                    }
                     if (foundArticle.getReviewer().getEmail().equals(searchEmail)) {
                         // Letting reviewer score the article
                         System.out.println("\nπαρακαλώ δώστε την βαθμολογία σας για το άρθρο");
@@ -341,31 +374,41 @@ public class it22105 {
                     }
 
                     // Αν υπάρχει το άρθρο, εκτυπώνουμε τον τίτλο και τον τύπο του άρθρου, τα ονόματα και τα
-                    // επίθετα των συγγραφέων(;)
+                    // επίθετα των συγγραφέων
 
                     // This doesn't make sense
                     foundArticle = articles.get(--searchID);
                     if (foundArticle instanceof FullPaper) {
                         System.out.println("Τίτλος άρθρου: " + foundArticle.getTitle() + "\nΤύπος άρθρου: Πλήρες άρθρο και " + ((FullPaper) foundArticle).getProperty());
-                    } else {
+                    } 
+                    else if (foundArticle instanceof PaperInProgress) {
                         System.out.println("Τίτλος άρθρου: " + foundArticle.getTitle() + "\nΤύπος άρθρου: Άρθρο-σε-πρόοδο και " + ((PaperInProgress) foundArticle).getProperty());
                     }
 
-                    System.out.println("Συγγραφείς: " + Arrays.toString(foundArticle.getAuthors()));
+                    // Εκτύπωση συγγραφέων (όνομα και επίθετο)
+                    if (foundArticle.getAuthors()[1] != null) {
+                        System.out.print("Συγγραφείς: ");
+                        System.out.print(foundArticle.getAuthors()[0].getName() + " " + foundArticle.getAuthors()[0].getSurname());
+                        System.out.print(", " + foundArticle.getAuthors()[1].getName() + " " + foundArticle.getAuthors()[1].getSurname());
+                    }
+                    else {
+                        System.out.print("Συγγραφέας: ");
+                        System.out.print(foundArticle.getAuthors()[0].getName() + " " + foundArticle.getAuthors()[0].getSurname());
+                    }
+                    System.out.println("");
 
                     if (foundArticle.getReviewer() == null) {
-                        System.out.println("Εκκρεμεί ορισμός αξιολογητή");
+                        System.out.println("\nΕκκρεμεί ορισμός αξιολογητή");
                         break;
                     }
 
                     if (articleScoreZero(foundArticle.getScore())) {
-                        System.out.println("Άρθρο προς αξιολόγηση");
+                        System.out.println("\nΆρθρο προς αξιολόγηση");
                         break;
                     }
 
                     // Μόνο εάν υπάρχει αξιολογητής και υπάρχει και βαθμολογία θα εκτυπωθούν τα παρακάτω
                     System.out.println("\nΜε την σειρά έχουμε βαθμολογία για Ερευνητική συνεισφορά, Ερευνητικά αποτελέσματα, Ερευνητική μεθοδολογία και την καινοτομία:\n" + Arrays.toString(foundArticle.getScore()));
-
 
                     break;
                     

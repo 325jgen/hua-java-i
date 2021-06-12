@@ -40,7 +40,7 @@ public abstract class Article {
         System.out.println("Δώσε μέχρι 3 keywords");
         System.out.println("Για να σταματήσεις να γράφεις keywords, γράψε exit");
         for (int i = 0; i < 3; i++) {
-            this.keywords[i] = input.nextLine();
+            this.keywords[i] = input.next();
             if (keywords[i].equals("exit")) {
                 this.keywords[i] = null;
                 break;
@@ -51,9 +51,15 @@ public abstract class Article {
         // Τύπος άρθρου
         System.out.println("Δώσε 1 αν το άρθρο είναι κανονικό και 2 αν το άρθρο είναι μελέτη περίπτωσης (case study)");
         this.property = input.next();
+        
+        // Αυτό το nextLine το βάζω εδώ γιατι η χρήση του inout.next() αφήνει τον χαρακατήρα newline στο input
+        // και το επόμενο input.nextLine() στο `if (property.equals("2"))` το διαβάζει και τερματίζει την εκτέλεση χωρίς να 
+        // πάρει όντως το input του χρήστη
+        // Το workaround αυτό το βρήκα σε αυτή την σελίδα https://stackoverflow.com/questions/13102045/scanner-is-skipping-nextline-after-using-next-or-nextfoo
+        input.nextLine();
 
         // Checking input
-        while (!(property.equals("1")) && !(property.equals("2"))) {
+        while (!property.equals("1") && !property.equals("2")) {
             System.out.println("Δώσατε αριθμό διαφορετικό του 1 ή του 2\nΠαρακαλώ προσπαθήστε ξανά");
             this.property = input.next();
         }
