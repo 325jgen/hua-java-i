@@ -18,6 +18,8 @@ public abstract class Article {
     private String propertyOrg;
 
 
+    // Ο IDCounter είναι ήδη 4 επειδή δημιουργήσαμε στην αρχή της main 4 default άρθρα, επομένως
+    // κάθε καινούριο άρθρο θα ξεκινάει από το 5 και μετά
     public static int IDCounter = 4;
 
     public Article(int ID, String title, String[] keywords, Author[] authors, Reviewer reviewer, int[] score, String property, String propertyOrg) {
@@ -71,8 +73,6 @@ public abstract class Article {
         } else {
             this.property = "Regular";
         }
-
-        // TODO fix author input
     }
 
     @Override
@@ -94,7 +94,7 @@ public abstract class Article {
     }
 
     public int howManyAuthors() {
-        System.out.println("\nΠόσοι συγγραφείς δούλεψαν σε για αυτό το άρθρο; (μέχρι 2)");
+        System.out.println("\nΠόσοι συγγραφείς δούλεψαν σε αυτό το άρθρο; (μέχρι 2)");
         int numOfAuthors = input.nextInt();
         while (numOfAuthors < 1 || numOfAuthors > 2) {
             System.out.println("Οι πιθανοί συγγραφείς που μπορεί το σύστημα να αποθηκεύσει είναι από 1 μέχρι 2");
@@ -110,6 +110,14 @@ public abstract class Article {
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+    
+      public static void setIDCounter(int IDCounter) {
+        Article.IDCounter = IDCounter;
+    }
+
+    public static int getIDCounter() {
+        return IDCounter;
     }
 
     public String getTitle() {
@@ -140,10 +148,6 @@ public abstract class Article {
 
     public Author[] getAuthors() {
         return authors;
-    }
-
-    public Author getAuthors(int index) {
-        return authors[index];
     }
 
     public void setAuthors(Author author, int index) {
@@ -181,4 +185,34 @@ public abstract class Article {
     public void setPropertyOrg(String propertyOrg) {
         this.propertyOrg = propertyOrg;
     }
+    
+    public boolean isScoreZero() {
+        // Αν το score 
+        return score[0] == 0 &&
+                score[1] == 0 &&
+                score[2] == 0 &&
+                score[3] == 0;
+    }
+    
+    public boolean isReviewerAnAuthor(String searchEmail) {
+        // Αν υπάρχουν 2 συγγραφείς
+        if (getAuthors()[1] != null) {
+            // Αν το email του πρώτου ή του δεύτερου συγγραφέα είναι ίδιο με τον αξιολογητή
+            if (getAuthors()[0].getEmail().equals(searchEmail) || getAuthors()[1].getEmail().equals(searchEmail)) {
+                System.out.println("Κανείς απο τους συγγραφείς δεν μπορεί να είναι και αξιολογητής του άρθρου του");
+                return true;
+            }
+        } 
+        else {
+            if (getAuthors()[0].getEmail().equals(searchEmail)) {
+                System.out.println("Ο συγγραφέας του άρθρου δεν μπορεί να είναι και αξιολογητής του άρθρου του");
+                return true;
+            }
+        }
+        // Αν δεν μπει πουθενά, τότε το email του αξιολογητή δεν ανοίκει σε κανέναν συγγραφέα
+        return false;
+    }
+
+  
+    
 }

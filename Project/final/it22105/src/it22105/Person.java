@@ -34,7 +34,7 @@ public abstract class Person {
                 title.equals("Mrs.") ||
                 title.equals("PhD Candidate") ||
                 title.equals("exit"))) {
-            System.out.println("Δεν γράψατε κανένα από τους επιτρεπόμενους τίτλους, παρακαλώ προσπαθείστε ξανά");
+            System.out.println("Δεν γράψατε κανένα από τους επιτρεπόμενους τίτλους, παρακαλώ προσπαθήστε ξανά");
             this.title = input.nextLine();
         }
         
@@ -127,5 +127,14 @@ public abstract class Person {
 
     public void setInstitution(String institution) {
         this.institution = institution;
+    }
+    
+    public String getTitleNameSurname() {
+        if (title == null) {
+            return name + " " + surname;
+        }
+        else {
+            return title + " " + name + " " + surname;
+        }
     }
 }

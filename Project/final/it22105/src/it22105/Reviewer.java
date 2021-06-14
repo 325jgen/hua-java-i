@@ -1,6 +1,7 @@
 package it22105;
 
 public class Reviewer extends Person {
+    
     public Reviewer(String email) {
         super(email);
     }
